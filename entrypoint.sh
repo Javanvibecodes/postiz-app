@@ -1,22 +1,15 @@
 #!/bin/bash
-
 set -o xtrace
 
 echo "Entrypoint: Starting Postiz..."
+echo "Entrypoint: Using Render-provided environment variables. Skipping .env copy."
 
-# Copy env config into the right place
-if [[ "$SKIP_CONFIG_CHECK" != "true" ]]; then
-  echo "Entrypoint: Copying /config/postiz.env into /app/.env"
-  if [ ! -f /config/postiz.env ]; then
-    echo "Entrypoint: WARNING: No postiz.env file found in /config/postiz.env"
-  fi
-  cp -vf /config/postiz.env /app/.env
-fi
-
-# Run DB migrations (Prisma)
-echo "Entrypoint: Running database migrations"
+# Ensure the database is ready and run Prisma migrations
+echo "Entrypoint: Running database migrations..."
 pnpm run prisma-db-push
 
-# Start all core apps via PM2
-echo "Entrypoint: Starting backend, frontend, workers, cron with PM2..."
-pnpm run pm2
+# Start services using PM2
+pnpm run --parallel pm2
+
+# Show PM2 logs (this keeps the container running and lets you see logs)
+pm2 logs
