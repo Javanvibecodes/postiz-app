@@ -4,9 +4,9 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "dev": "dotenv -e ../../.env -- next dev -p 4200",
+    "dev": "dotenv -e ../../.env -- next dev -p 3000",
     "build": "next build",
-    "start": "dotenv -e ../../.env -- next start -p 4200",
+    "start": "PORT=3000 next start",
     "pm2": "pm2 start pnpm --name frontend -- start"
   },
   "keywords": [],
