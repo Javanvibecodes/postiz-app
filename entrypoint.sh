@@ -2,6 +2,7 @@
 set -o xtrace
 
 echo "Entrypoint: Starting Postiz..."
+echo "Render assigned port: $PORT"
 echo "Entrypoint: Using Render-provided environment variables. Skipping .env copy."
 
 # Ensure the database is ready and run Prisma migrations
