@@ -27,7 +27,6 @@ RUN pnpm install --frozen-lockfile
 RUN pnpm run build
 
 # Expose frontend and backend ports
-EXPOSE 4200
 EXPOSE 3000
 
 # Run entrypoint script
