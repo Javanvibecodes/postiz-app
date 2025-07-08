@@ -1,34 +1,34 @@
-# Use Node 20 base image
-FROM node:20
+FROM node:20-bullseye
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Install system dependencies (bash, supervisor, etc.)
+# Install system dependencies (bash, supervisor, netcat)
 RUN apt-get update && apt-get install -y \
-    bash \
-    supervisor \
-    netcat \
- && rm -rf /var/lib/apt/lists/*
+  bash \
+  supervisor \
+  netcat \
+  ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install pnpm and pm2 globally
-RUN npm install -g pnpm pm2
+RUN npm install -g pnpm@10.6.1 pm2
 
-# Copy your app source code into the image
+# Copy app source
 COPY . .
 
-# Make sure entrypoint.sh is executable
+# Make sure entrypoint script is executable
 RUN chmod +x /app/entrypoint.sh
 
-# Install Node.js dependencies with pnpm
+# Install node dependencies
 RUN pnpm install --frozen-lockfile
 
-# Build the project (frontend, backend, etc.)
+# Build app
 RUN pnpm run build
 
-# Expose necessary ports
+# Expose frontend and backend ports
 EXPOSE 4200
 EXPOSE 3000
 
-# Start your app via the entrypoint script
+# Run entrypoint script
 ENTRYPOINT ["bash", "/app/entrypoint.sh"]
