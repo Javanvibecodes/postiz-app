@@ -27,7 +27,8 @@ RUN pnpm install --frozen-lockfile
 RUN pnpm run build
 
 # Expose frontend and backend ports
-EXPOSE 3000
+EXPOSE $PORT
+
 
 # Run entrypoint script
 ENTRYPOINT ["bash", "/app/entrypoint.sh"]
