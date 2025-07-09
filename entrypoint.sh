@@ -3,14 +3,18 @@ set -o xtrace
 
 echo "Entrypoint: Starting Postiz..."
 echo "Render assigned port: $PORT"
+echo "Node version: $(node -v)"
+echo "PNPM version: $(pnpm -v)"
+echo "Environment: $NODE_ENV"
+echo "Backend URL: $NEXT_PUBLIC_BACKEND_URL"
 echo "Entrypoint: Using Render-provided environment variables. Skipping .env copy."
 
-# Ensure the database is ready and run Prisma migrations
+# Run Prisma migrations
 echo "Entrypoint: Running database migrations..."
 pnpm run prisma-db-push
 
-# Start services using PM2
+# Start frontend/backend
 pnpm run --parallel pm2
 
-# Show PM2 logs (this keeps the container running and lets you see logs)
+# Keep container alive and log output
 pm2 logs
